@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>404 — Page Not Found | MEGA BOOSTER PANEL</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0f1724;
+  --card: #0b1220;
+  --muted: #9aa4b2;
+  --accent: #6ee7b7;
+  --glass: rgba(255,255,255,0.04);
+  --text: #e6eef6;
+  font-family: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}
+
+body {
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(180deg, var(--bg), #071124 140%);
+  color: var(--text);
+  overflow: hidden;
+}
+
+.container {
+  text-align: center;
+  border: 2px solid var(--accent);
+  border-radius: 20px;
+  padding: 40px 30px;
+  background: var(--glass);
+  box-shadow: 0 0 40px rgba(110,231,183,0.25);
+  animation: fadeIn 1s ease;
+  max-width: 400px;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+h1 {
+  font-size: 80px;
+  font-weight: 800;
+  color: var(--accent);
+  margin: 0;
+  text-shadow: 0 0 20px rgba(110,231,183,0.4);
+}
+
+h2 {
+  margin-top: 10px;
+  font-weight: 700;
+  font-size: 22px;
+}
+
+p {
+  color: var(--muted);
+  margin: 12px 0 24px;
+  font-size: 15px;
+}
+
+.countdown {
+  font-weight: 600;
+  color: var(--accent);
+  margin-top: -10px;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+.button {
+  display: inline-block;
+  background: var(--accent);
+  color: #0b1220;
+  text-decoration: none;
+  font-weight: 700;
+  padding: 12px 24px;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(110,231,183,0.25);
+  transition: all 0.3s ease;
+}
+.button:hover {
+  background: #9be7d4;
+  box-shadow: 0 0 30px rgba(110,231,183,0.4);
+}
+
+footer {
+  position: absolute;
+  bottom: 10px;
+  width: 100%;
+  text-align: center;
+  color: var(--muted);
+  font-size: 13px;
+}
+footer span {
+  color: var(--accent);
+}
+</style>
+</head>
+<body>
+  <div class="container">
+    <h1>404</h1>
+    <h2>Page Not Found</h2>
+    <p>Oops! The page you’re looking for doesn’t exist or has been moved.</p>
+    <div class="countdown">Redirecting to homepage in <span id="count">5</span> seconds...</div>
+    <a href="index.html" class="button">🏠 Back to Home</a>
+  </div>
+
+  <footer>
+    © <span id="year"></span> MEGA BOOSTER PANEL — All Rights Reserved.
+  </footer>
+
+<script>
+  // Auto year
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // Countdown redirect
+  let count = 5;
+  const countEl = document.getElementById('count');
+  const interval = setInterval(() => {
+    count--;
+    countEl.textContent = count;
+    if (count <= 0) {
+      clearInterval(interval);
+      window.location.href = 'index.html';
+    }
+  }, 1000);
+</script>
+</body>
+</html>

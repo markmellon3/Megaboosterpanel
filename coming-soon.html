@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Coming Soon — MEGA SMM PANEL</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #0f1724;
+      --card: #0b1220;
+      --border: #1e293b;
+      --muted: #9aa4b2;
+      --accent: #06b6d4;
+      --text: #e6eef6;
+    }
+    :root.light {
+      --bg: #f8fafc;
+      --card: #fff;
+      --border: #e2e8f0;
+      --muted: #4b5563;
+      --accent: #06b6d4;
+      --text: #0b1220;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Inter", system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      flex-direction: column;
+      text-align: center;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 40px 60px;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.4);
+      animation: fadeIn 1.2s ease;
+    }
+
+    h1 {
+      font-size: 2rem;
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+
+    p {
+      color: var(--muted);
+      font-size: 1rem;
+      margin-bottom: 20px;
+    }
+
+    .loading {
+      width: 42px;
+      height: 42px;
+      border: 3px solid var(--accent);
+      border-top-color: transparent;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto;
+    }
+
+    footer {
+      position: absolute;
+      bottom: 20px;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <h1>🚧 Coming Soon</h1>
+    <p>We’re preparing something awesome for you... <br>Redirecting to Home Page in <span id="countdown">5</span> seconds.</p>
+    <div class="loading"></div>
+  </div>
+
+  <footer>
+    © <span id="year"></span> MEGA SMM PANEL (MSP)
+  </footer>
+
+  <script>
+    // Apply saved theme preference
+    if (localStorage.getItem('msp_theme') === 'light') {
+      document.documentElement.classList.add('light');
+    }
+
+    // Countdown + redirect logic
+    let seconds = 5;
+    const countdown = document.getElementById("countdown");
+    const interval = setInterval(() => {
+      seconds--;
+      countdown.textContent = seconds;
+      if (seconds <= 0) {
+        clearInterval(interval);
+        window.location.href = "index.html"; // redirect
+      }
+    }, 1000);
+
+    // Current year in footer
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+
+</body>
+</html>

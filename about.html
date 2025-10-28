@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>About — MEGA SMM PANEL</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:#0f1724;--card:#0b1220;--muted:#9aa4b2;--accent:#6ee7d7;
+      --text:#e6eef6;--radius:12px
+    }
+    :root.light {
+      --bg:#f7fbff;--card:#fff;--muted:#4b5563;--text:#0b1220
+    }
+    *{box-sizing:border-box}
+    body {
+      margin:0;font-family:Inter,system-ui;padding:28px;
+      background:var(--bg);color:var(--text)
+    }
+    .page {
+      max-width:980px;margin:0 auto;border-radius:14px;padding:22px;
+      background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);
+      box-shadow:0 8px 28px rgba(2,6,23,0.6)
+    }
+    header {
+      display:flex;justify-content:space-between;align-items:center;margin-bottom:16px
+    }
+    a {color:var(--muted);text-decoration:none}
+    .logo {display:flex;gap:12px;align-items:center}
+    .logo .mark {
+      width:48px;height:48px;border-radius:10px;
+      background:linear-gradient(135deg,#052e2a,#0f6f64);
+      display:flex;align-items:center;justify-content:center;
+      font-weight:900;color:#07121b
+    }
+    .card {
+      background:var(--card);padding:18px;border-radius:12px;
+      border:1px solid rgba(255,255,255,0.06);margin-top:16px
+    }
+    .btn {
+      background:linear-gradient(90deg,var(--accent),#9be7d4);
+      border:0;padding:10px 14px;border-radius:10px;
+      color:#07121b;font-weight:700;cursor:pointer
+    }
+    .theme-toggle {
+      border:1px solid rgba(255,255,255,0.06);
+      background:transparent;padding:6px 10px;border-radius:8px;color:inherit
+    }
+    .contact-btns {
+      display:flex;gap:10px;flex-wrap:wrap;margin-top:10px
+    }
+    .contact-btns a {
+      flex:1;text-align:center;text-decoration:none;
+      background:linear-gradient(90deg,var(--accent),#9be7d4);
+      color:#07121b;font-weight:700;padding:10px;border-radius:10px
+    }
+    .contact-btns a:hover {
+      opacity:0.9;transform:translateY(-2px);transition:0.3s
+    }
+  </style>
+</head>
+
+<body>
+  <div class="page">
+    <header>
+      <div class="logo">
+        <div class="mark">MSP</div>
+        <div>
+          <div style="font-weight:900">MEGA SMM PANEL</div>
+          <div style="font-size:12px;color:var(--muted)">About</div>
+        </div>
+      </div>
+      <div>
+        <button class="theme-toggle" id="themeToggle">🌓</button>
+        <a href="index.html" class="btn" style="margin-left:8px">Back</a>
+      </div>
+    </header>
+
+    <main>
+      <!-- About Section -->
+      <div class="card">
+        <h1>About MEGA SMM PANEL</h1>
+        <p class="muted">MEGA SMM PANEL (MSP) provides reliable social media marketing services — followers, likes, engagement & promotion packages. Built to be fast and simple for clients to order.</p>
+        <ul style="margin-top:12px;color:var(--muted);line-height:1.6">
+          <li>✅ Transparent pricing</li>
+          <li>✅ Fast delivery on approved packages</li>
+          <li>✅ Support via WhatsApp (server-forwarded)</li>
+        </ul>
+      </div>
+
+      <!-- Contact Information Section -->
+      <div class="card">
+        <h2>📞 Contact Information</h2>
+        <p><strong>Phone / WhatsApp:</strong> <span id="phoneNumber">0745 601101</span></p>
+        <p><strong>Email:</strong> <a href="mailto:megaboosterpannal@gmail.com">megasmmpanel@gmail.com</a></p>
+        <button class="btn" onclick="copyPhone()">Copy Phone Number</button>
+      </div>
+
+      <!-- Contact Action Buttons -->
+      <div class="card">
+        <h2>💬 Get In Touch</h2>
+        <p class="muted">Reach out to us instantly through WhatsApp or email. Our support is active 24/7 to assist you.</p>
+        <div class="contact-btns">
+          <a href="https://wa.me/256745601101?text=Hello%20MEGA%20SMM%20PANEL%2C%20I%27d%20like%20to%20learn%20more%20about%20your%20services." target="_blank">💚 Chat on WhatsApp</a>
+          <a href="mailto:megaboosterpannal@gmail.com?subject=Service%20Inquiry">📧 Send Email</a>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    // Theme toggle
+    if(localStorage.getItem('msp_theme') === 'light') 
+      document.documentElement.classList.add('light');
+    document.getElementById('themeToggle').addEventListener('click', ()=> {
+      document.documentElement.classList.toggle('light');
+      localStorage.setItem('msp_theme', 
+        document.documentElement.classList.contains('light') ? 'light' : 'dark');
+    });
+
+    // Copy phone number function
+    function copyPhone() {
+      const phone = document.getElementById("phoneNumber").textContent;
+      navigator.clipboard.writeText(phone).then(() => {
+        alert("📋 Phone number copied to clipboard!");
+      });
+    }
+  </script>
+  <!-- 🌍 PAGE FOOTER -->
+<footer style="
+  text-align:center;
+  margin-top:40px;
+  padding:16px 10px;
+  border-top:2px solid rgba(110,231,183,0.3);
+  color:#9aa4b2;
+  font-size:14px;
+  background:rgba(255,255,255,0.02);
+  border-radius:14px;
+">
+  <p>© <span id="year"></span> MEGA BOOSTER PANEL — All Rights Reserved.</p>
+  <p>let's become famous 🎉</p>
+</footer>
+</body>
+</html>

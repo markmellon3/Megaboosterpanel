@@ -1,0 +1,428 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>MEGA BOOSTER PANEL — INSTAGRAM SMM</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root {
+  --bg:#0f1724;
+  --card:#0b1220;
+  --muted:#9aa4b2;
+  --accent:#6ee7b7;
+  --glass:rgba(255,255,255,0.04);
+  --text:#e6eef6;
+  font-family:'Inter',system-ui;
+}
+body {
+  margin:0;
+  background:linear-gradient(180deg,var(--bg),#071124 140%);
+  color:var(--text);
+  padding:24px;
+}
+.wrap{max-width:900px;margin:0 auto}
+
+/* HEADER NAV */
+.header-border {
+  border:2px solid var(--accent);
+  border-radius:18px;
+  background:rgba(255,255,255,0.02);
+  padding:18px 22px;
+  box-shadow:0 0 25px rgba(110,231,183,0.25);
+  margin-bottom:28px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  flex-wrap:wrap;
+}
+.brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-weight:800;
+  font-size:18px;
+  text-decoration:none;
+  color:var(--text);
+}
+.brand i{color:var(--accent);}
+.nav-links{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+}
+.nav-links a{
+  text-decoration:none;
+  color:var(--muted);
+  padding:6px 12px;
+  border:1px solid var(--glass);
+  border-radius:8px;
+  transition:all .3s;
+}
+.nav-links a:hover{
+  color:var(--accent);
+  border-color:var(--accent);
+}
+
+/* SERVICE CARDS */
+.card-grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:20px;
+}
+.service {
+  border:2px solid var(--accent);
+  border-radius:16px;
+  background:rgba(255,255,255,0.02);
+  padding:20px;
+  text-align:center;
+  transition:all .3s ease;
+  cursor:pointer;
+  position:relative;
+  overflow:hidden;
+}
+.service:hover {
+  transform:translateY(-5px);
+  box-shadow:0 0 25px rgba(110,231,183,0.3);
+}
+.service i {
+  font-size:30px;
+  color:var(--accent);
+  margin-bottom:8px;
+}
+.service span {
+  display:block;
+  font-weight:700;
+  font-size:16px;
+}
+.price-tag {
+  margin-top:6px;
+  font-size:13px;
+  color:var(--muted);
+  background:rgba(110,231,183,0.1);
+  border:1px solid rgba(110,231,183,0.3);
+  border-radius:8px;
+  padding:4px 6px;
+  display:inline-block;
+}
+
+/* EXPANDING DETAILS */
+.service-details {
+  max-height:0;
+  overflow:hidden;
+  opacity:0;
+  transition:all 0.5s ease;
+  margin-top:10px;
+}
+.service.expanded .service-details {
+  max-height:150px;
+  opacity:1;
+}
+.service-details p {
+  font-size:13px;
+  color:var(--muted);
+  margin:6px 0;
+}
+.service-details button {
+  margin-top:8px;
+  background:var(--accent);
+  color:#0b1220;
+  border:none;
+  border-radius:8px;
+  padding:6px 10px;
+  font-size:14px;
+  cursor:pointer;
+  font-weight:600;
+}
+.service-details button:hover {opacity:.9;}
+
+/* ORDER FORM */
+form {
+  border:2px solid var(--accent);
+  border-radius:18px;
+  background:rgba(255,255,255,0.02);
+  padding:24px;
+  margin-top:40px;
+  box-shadow:0 0 25px rgba(110,231,183,0.25);
+}
+form h2 {
+  text-align:center;
+  margin-top:0;
+  margin-bottom:16px;
+}
+input,select {
+  width:100%;
+  padding:10px;
+  margin-bottom:12px;
+  border-radius:8px;
+  border:1px solid var(--glass);
+  background:rgba(255,255,255,0.03);
+  color:var(--text);
+  font-size:15px;
+}
+button {
+  background:var(--accent);
+  color:#0b1220;
+  border:none;
+  border-radius:10px;
+  padding:10px 18px;
+  font-weight:700;
+  cursor:pointer;
+  transition:all .3s;
+  width:100%;
+}
+button:hover {opacity:.9;}
+.total-box {
+  margin-top:10px;
+  text-align:center;
+  font-weight:600;
+  color:var(--accent);
+  font-size:16px;
+}
+
+/* PAYMENT POPUP */
+.modal-overlay {
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.6);
+  backdrop-filter:blur(5px);
+  align-items:center;
+  justify-content:center;
+  z-index:1000;
+}
+.modal {
+  background:rgba(255,255,255,0.04);
+  border:2px solid var(--accent);
+  border-radius:18px;
+  padding:24px;
+  box-shadow:0 0 30px rgba(110,231,183,0.3);
+  max-width:360px;
+  width:90%;
+  text-align:center;
+  animation:popIn .4s ease;
+  position:relative;
+}
+@keyframes popIn {
+  from {transform:scale(0.8);opacity:0;}
+  to {transform:scale(1);opacity:1;}
+}
+.modal h3{margin-top:0;}
+.network-btn {
+  display:block;
+  margin:10px auto;
+  padding:10px;
+  border-radius:10px;
+  font-weight:700;
+  border:none;
+  cursor:pointer;
+  font-size:15px;
+  color:#0b1220;
+}
+.airtel-btn {background:#e60000;}
+.mtn-btn {background:#ffd700;}
+.copy-btn {
+  display:block;
+  background:transparent;
+  border:1px solid var(--accent);
+  color:var(--accent);
+  padding:8px 12px;
+  border-radius:10px;
+  margin:10px auto;
+  width:auto;
+  cursor:pointer;
+}
+.copy-btn:hover {
+  background:var(--accent);
+  color:#0b1220;
+}
+.confirm-btn {
+  margin-top:12px;
+  background:var(--accent);
+  color:#0b1220;
+  padding:10px;
+  border-radius:10px;
+  font-weight:700;
+  cursor:pointer;
+}
+.close-btn {
+  background:transparent;
+  border:none;
+  color:var(--muted);
+  font-size:18px;
+  position:absolute;
+  top:10px;
+  right:14px;
+  cursor:pointer;
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="header-border">
+    <a href="#" class="brand"><i class="fab fa-twitch"></i> TWITCH</a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="#orderForm">Order Now</a>
+    </div>
+  </header>
+
+  <!-- 🌟 SERVICES -->
+  <div class="card-grid">
+    <div class="service" data-service="Followers">
+      <i class="fa-solid fa-heart"></i><span>Twitch Followers</span>
+      <div class="price-tag">UGX 4,000 Per 1000</div>
+      <div class="price-tag">USD 1.30 Per 1000</div> 
+      <div class="service-details">
+        <p>Boost your Instagram likes instantly. Real engagement and fast delivery within minutes.</p>
+        <p><b>Delivery:</b> 5–30 mins • <b>Discount:</b> 5% for 10k+</p>
+        <button class="order-btn">Order Likes</button>
+      </div>
+    </div>
+
+    
+
+    
+  <!-- ORDER FORM -->
+  <form id="orderForm">
+    <h2>Complete Your Order</h2>
+    <input type="text" id="name" placeholder="Your Name" required>
+    <input type="tel" id="phone" placeholder="Your Payment Phone Number" required>
+    <input type="url" id="link" placeholder="Twitch Account  Link" required>
+    <select id="serviceSelect" required>
+      <option value="">Select Service</option>
+      <option>Twitch followers</option>
+      
+      
+    </select>
+    <input type="number" id="quantity" placeholder="Quantity (e.g. 1000)" required min="10">
+    <div class="total-box" id="totalBox">Total: UGX 0</div>
+    <button type="submit">Proceed to Payment</button>
+  </form>
+
+  <!-- PAYMENT POPUP -->
+  <div class="modal-overlay" id="paymentModal">
+    <div class="modal">
+      <button class="close-btn" id="closeModal">&times;</button>
+      <h3>Choose Payment Method</h3>
+      <button class="network-btn airtel-btn" id="airtelPay">Pay with Airtel Money</button>
+      <button class="network-btn mtn-btn" id="mtnPay">Pay with MTN Money</button>
+      <button class="copy-btn" id="copyNumber">📋 Copy Merchant (6912491)</button>
+      <p>(First pay before confirming your order) </p>
+      <button class="confirm-btn" id="confirmPay">Confirm Payment order Message WhatsApp</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const prices = {
+  'Twitch followers':4000,
+  'Followers':16000,
+  'Views':2000,
+  'Shares':3000,
+  'Favorites':4000,
+  'Comments':3000
+};
+const whatsappNumber = '256745601101';
+const paymentNumber = '6912491';
+const airtelCode = '*185*9#';
+const mtnCode = '*165*1*1*0745601101#';
+
+const form = document.getElementById('orderForm');
+const totalBox = document.getElementById('totalBox');
+const modal = document.getElementById('paymentModal');
+const closeModal = document.getElementById('closeModal');
+const confirmPay = document.getElementById('confirmPay');
+const copyNumberBtn = document.getElementById('copyNumber');
+
+function updateTotal(){
+  const service=document.getElementById('serviceSelect').value;
+  const qty=parseInt(document.getElementById('quantity').value);
+  if(!service||!qty||qty<=0){totalBox.textContent='Total: UGX 0';return 0;}
+  const price=prices[service]||0;
+  const total=(price/1000)*qty;
+  totalBox.textContent=`Total: UGX ${total.toLocaleString()}`;
+  return total;
+}
+document.getElementById('quantity').addEventListener('input',updateTotal);
+document.getElementById('serviceSelect').addEventListener('change',updateTotal);
+
+document.querySelectorAll('.service').forEach(card=>{
+  card.addEventListener('click',()=>{
+    document.querySelectorAll('.service').forEach(c=>c!==card&&c.classList.remove('expanded'));
+    card.classList.toggle('expanded');
+  });
+});
+document.querySelectorAll('.order-btn').forEach(btn=>{
+  btn.addEventListener('click',e=>{
+    e.stopPropagation();
+    const s=e.target.closest('.service').dataset.service;
+    document.getElementById('serviceSelect').value=s;
+    updateTotal();
+    window.scrollTo({top:form.offsetTop,behavior:'smooth'});
+  });
+});
+
+form.addEventListener('submit',e=>{
+  e.preventDefault();
+  modal.style.display='flex';
+});
+closeModal.addEventListener('click',()=>modal.style.display='none');
+modal.addEventListener('click',e=>{if(e.target===modal)modal.style.display='none';});
+
+document.getElementById('airtelPay').addEventListener('click',()=>{
+  window.location.href=`tel:${encodeURIComponent(airtelCode)}`;
+});
+document.getElementById('mtnPay').addEventListener('click',()=>{
+  window.location.href=`tel:${encodeURIComponent(mtnCode)}`;
+});
+
+copyNumberBtn.addEventListener('click',()=>{
+  navigator.clipboard.writeText(paymentNumber);
+  alert('✅ Payment number copied successfully!');
+});
+
+confirmPay.addEventListener('click',()=>{
+  const name=document.getElementById('name').value;
+  const phone=document.getElementById('phone').value;
+  const link=document.getElementById('link').value;
+  const service=document.getElementById('serviceSelect').value;
+  const qty=document.getElementById('quantity').value;
+  const total=updateTotal();
+  const msg=`🧾 *New TikTok Order*
+-------------------------
+👤 Name: ${name}
+📞 Phone: ${phone}
+🔗 TikTok Link: ${link}
+📦 Service: ${service}
+🔢 Quantity: ${qty}
+💰 Total: UGX ${total.toLocaleString()}
+✅ I’ve made payment via Mobile Money.`;
+  const url=`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(msg)}`;
+  window.open(url,'_blank');
+  modal.style.display='none';
+});
+</script>
+ <!-- 🌍 PAGE FOOTER -->
+<footer style="
+  text-align:center;
+  margin-top:40px;
+  padding:16px 10px;
+  border-top:2px solid rgba(110,231,183,0.3);
+  color:#9aa4b2;
+  font-size:14px;
+  background:rgba(255,255,255,0.02);
+  border-radius:14px;
+">
+  <p>© <span id="year"></span> MEGA BOOSTER PANEL — All Rights Reserved.</p>
+  <p>let's become famous 🎉</p>
+</footer>
+
+<script>
+  // Auto-update footer year
+  document.getElementById("year").textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
