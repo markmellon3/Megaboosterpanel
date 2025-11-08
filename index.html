@@ -367,6 +367,377 @@
   // Auto-update footer year
   document.getElementById("year").textContent = new Date().getFullYear();
 </script>
+<!-- =========================
+     SITE LOCK / MAINTENANCE
+     Paste this whole block before </body>
+     Replace adminIP variable with your IP if needed.
+     ========================== -->
+<style id="site-lock-style">
+  /* Full-screen maintenance overlay */
+  #site-lock-overlay{
+    position:fixed;
+    inset:0;
+    background:linear-gradient(180deg, rgba(0,0,0,0.75), rgba(0,0,0,0.85));
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    z-index:9999999;
+    font-family:Inter, system-ui, Arial, sans-serif;
+  }
+  #site-lock-card{
+    width:min(820px,96%);
+    background:rgba(255,255,255,0.03);
+    border-radius:12px;
+    padding:28px;
+    box-shadow:0 10px 40px rgba(0,0,0,0.6);
+    text-align:center;
+    backdrop-filter: blur(6px);
+    border:1px solid rgba(255,255,255,0.06);
+  }
+  #site-lock-card h1{margin:0 0 8px;font-size:28px;letter-spacing:0.4px;}
+  #site-lock-card p{margin:0 0 18px;opacity:0.95;}
+  #site-lock-card .muted{opacity:0.8;font-size:13px;margin-bottom:18px;}
+  #site-lock-card input[type=password]{
+    width:60%;
+    min-width:220px;
+    padding:10px 12px;
+    border-radius:8px;
+    border:1px solid rgba(255,255,255,0.12);
+    background:rgba(0,0,0,0.35);
+    color:#fff;
+    outline:none;
+    margin-right:8px;
+  }
+  #site-lock-card button{
+    padding:10px 14px;
+    border-radius:8px;
+    border:none;
+    cursor:pointer;
+    background:linear-gradient(90deg,#2b9bf3,#2b7ef3);
+    color:#fff;
+    font-weight:600;
+  }
+  #site-lock-footer{margin-top:14px;font-size:13px;color:rgba(255,255,255,0.75)}
+  /* small admin widget for admins (only visible on adminIP) */
+  #admin-widget{
+    position:fixed;
+    right:18px;
+    top:18px;
+    z-index:99999999;
+    background:rgba(0,0,0,0.6);
+    color:#fff;
+    border:1px solid rgba(255,255,255,0.06);
+    padding:8px;
+    border-radius:10px;
+    font-family:Inter, Arial, sans-serif;
+    backdrop-filter: blur(6px);
+  }
+  #admin-panel{
+    position:fixed;
+    right:18px;
+    top:70px;
+    z-index:99999999;
+    width:360px;
+    max-width:calc(100% - 40px);
+    background:rgba(18,18,18,0.95);
+    color:#fff;
+    border-radius:12px;
+    padding:14px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.6);
+    border:1px solid rgba(255,255,255,0.05);
+    display:none;
+    font-size:14px;
+  }
+  #admin-panel label{display:block;margin-top:8px;font-size:13px;color:rgba(255,255,255,0.9)}
+  #admin-panel input[type=password], #admin-panel input[type=text]{
+    width:100%;
+    padding:8px 10px;margin-top:6px;border-radius:8px;border:1px solid rgba(255,255,255,0.07);
+    background:rgba(255,255,255,0.02); color:#fff;
+  }
+  #admin-panel .row{display:flex;gap:8px;margin-top:10px}
+  #admin-panel small{display:block;margin-top:8px;color:rgba(255,255,255,0.7)}
+  .admin-btn{flex:1;padding:8px;border-radius:8px;border:none;cursor:pointer;background:#2b7ef3;color:white;font-weight:600;}
+  .admin-btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:#fff}
+</style>
 
+<div id="site-lock-overlay" aria-hidden="false" role="dialog" aria-label="Site maintenance">
+  <div id="site-lock-card" role="document">
+    <h1>Maintenance mode</h1>
+    <p class="muted">This website is temporarily unavailable while we perform scheduled maintenance. Please enter the password to continue.</p>
+
+    <div id="site-lock-controls" style="display:flex;justify-content:center;align-items:center;">
+      <input id="site-lock-pass" type="password" placeholder="Enter password" aria-label="Site unlock password" />
+      <button id="site-lock-submit">Enter</button>
+    </div>
+
+    <div id="site-lock-footer">If you are the site owner, sign in from your admin IP to manage maintenance.</div>
+  </div>
+</div>
+
+<!-- Admin widget (only shown if your IP matches adminIP) -->
+<div id="admin-widget" style="display:none;">
+  <div style="display:flex;gap:10px;align-items:center;">
+    <strong style="font-size:13px">Admin</strong>
+    <button id="admin-open" style="padding:6px 8px;border-radius:8px;border:none;background:#2b7ef3;color:#fff;cursor:pointer;font-weight:600">Open</button>
+  </div>
+</div>
+
+<!-- Admin panel -->
+<div id="admin-panel" aria-hidden="true">
+  <div style="display:flex;justify-content:space-between;align-items:center">
+    <strong>Maintenance — Admin</strong>
+    <button id="admin-close" class="admin-btn ghost" style="padding:6px 10px;">Close</button>
+  </div>
+
+  <label>Your detected IP</label>
+  <input id="detected-ip" type="text" readonly />
+
+  <label>Toggle Maintenance Mode</label>
+  <div class="row">
+    <button id="toggle-maint" class="admin-btn">Toggle</button>
+    <button id="force-open" class="admin-btn ghost">Open site now</button>
+  </div>
+  <small>Use toggle to switch maintenance state. "Open site now" will fully remove the overlay for everyone (persists in localStorage).</small>
+
+  <label>Set / Change Password</label>
+  <input id="new-pass" type="password" placeholder="New password (leave blank to keep)" />
+  <div class="row">
+    <button id="set-pass" class="admin-btn">Set password</button>
+    <button id="clear-pass" class="admin-btn ghost">Clear password</button>
+  </div>
+
+  <label>Admin session</label>
+  <div style="display:flex;gap:8px;margin-top:8px">
+    <button id="admin-logout" class="admin-btn ghost">End admin session</button>
+    <button id="admin-hide" class="admin-btn">Hide panel</button>
+  </div>
+
+  <small style="margin-top:8px;display:block;color:rgba(255,255,255,0.6)">Note: This is a client-side lock. For maximum security you should also implement server-side maintenance routing or require server checks on each request.</small>
+</div>
+
+<script>
+(async function(){
+  // ========== CONFIG ==========
+  // Change this to YOUR IP if needed. It's already set to the IP we used earlier.
+  const adminIP = "197.239.14.4";
+
+  // Storage keys
+  const KEY_HASH = 'site_lock_hash_v1';     // stored SHA-256 hex of password
+  const KEY_LOCKED = 'site_locked_v1';      // "true" or "false": global maintenance toggle
+  const SESSION_UNLOCK = 'site_unlocked_session_v1'; // session-only key to allow bypass
+
+  // Elements
+  const overlay = document.getElementById('site-lock-overlay');
+  const passInput = document.getElementById('site-lock-pass');
+  const submitBtn = document.getElementById('site-lock-submit');
+  const adminWidget = document.getElementById('admin-widget');
+  const adminPanel = document.getElementById('admin-panel');
+  const adminOpen = document.getElementById('admin-open');
+  const adminClose = document.getElementById('admin-close');
+  const detectedIpEl = document.getElementById('detected-ip');
+  const toggleMaintBtn = document.getElementById('toggle-maint');
+  const forceOpenBtn = document.getElementById('force-open');
+  const newPassInput = document.getElementById('new-pass');
+  const setPassBtn = document.getElementById('set-pass');
+  const clearPassBtn = document.getElementById('clear-pass');
+  const adminLogoutBtn = document.getElementById('admin-logout');
+  const adminHideBtn = document.getElementById('admin-hide');
+
+  // Utility: SHA-256 to hex (Web Crypto)
+  async function sha256Hex(text){
+    const enc = new TextEncoder();
+    const data = enc.encode(text);
+    const hashBuf = await crypto.subtle.digest('SHA-256', data);
+    const hashArr = Array.from(new Uint8Array(hashBuf));
+    return hashArr.map(b => b.toString(16).padStart(2,'0')).join('');
+  }
+
+  // Get visitor IP via ipify (simple free service). If blocked, admin features hide.
+  async function getVisitorIP(){
+    try{
+      const res = await fetch('https://api.ipify.org?format=json', { cache: 'no-store' , mode: 'cors' });
+      if(!res.ok) throw new Error('ip fetch failed');
+      const j = await res.json();
+      return j.ip;
+    }catch(e){
+      // fallback: try another service or return null
+      try{
+        const res2 = await fetch('https://api64.ipify.org?format=json', { cache:'no-store' });
+        if(res2.ok){ const j2 = await res2.json(); return j2.ip; }
+      }catch(e2){}
+      return null;
+    }
+  }
+
+  // Check if site locked globally (default true)
+  function isLocked(){
+    const v = localStorage.getItem(KEY_LOCKED);
+    // default to locked if not set
+    return v === null ? true : (v === 'true');
+  }
+
+  function showOverlay(){
+    overlay.style.display = 'flex';
+    overlay.setAttribute('aria-hidden','false');
+  }
+  function hideOverlay(){
+    overlay.style.display = 'none';
+    overlay.setAttribute('aria-hidden','true');
+  }
+
+  // main initialization
+  const visitorIP = await getVisitorIP();
+  if(visitorIP) detectedIpEl.value = visitorIP;
+  // show admin widget only if IP matches adminIP
+  const amAdmin = !!visitorIP && (visitorIP === adminIP || visitorIP === '127.0.0.1' || visitorIP === '::1');
+
+  if(amAdmin){
+    adminWidget.style.display = 'block';
+  }else{
+    adminWidget.style.display = 'none';
+  }
+
+  // If site is globally unlocked, remove overlay entirely
+  if(!isLocked()){
+    // allow immediate access
+    hideOverlay();
+  } else {
+    // site is locked: show overlay unless session unlock is set
+    const sess = sessionStorage.getItem(SESSION_UNLOCK);
+    if(sess === 'true'){
+      hideOverlay();
+    } else {
+      showOverlay();
+    }
+  }
+
+  // If there's no password set yet, inform admin (password must be set to unlock)
+  function hasPassword(){
+    return !!localStorage.getItem(KEY_HASH);
+  }
+
+  // When user submits password
+  submitBtn.addEventListener('click', async function(){
+    const entered = passInput.value || '';
+    passInput.value = '';
+    if(!entered){
+      alert('Please enter a password.');
+      return;
+    }
+    const storedHash = localStorage.getItem(KEY_HASH);
+    if(!storedHash){
+      alert('No password is set. Contact the site admin (admin IP) to set a password.');
+      return;
+    }
+    const hex = await sha256Hex(entered);
+    if(hex === storedHash){
+      // allow session unlock
+      sessionStorage.setItem(SESSION_UNLOCK, 'true');
+      hideOverlay();
+    } else {
+      alert('Incorrect password.');
+    }
+  });
+
+  // Allow Enter key in password field
+  passInput.addEventListener('keydown', function(e){
+    if(e.key === 'Enter'){ submitBtn.click(); }
+  });
+
+  // ADMIN PANEL actions
+  adminOpen.addEventListener('click', function(){
+    adminPanel.style.display = 'block';
+    adminPanel.setAttribute('aria-hidden','false');
+  });
+  adminClose.addEventListener('click', function(){
+    adminPanel.style.display = 'none';
+    adminPanel.setAttribute('aria-hidden','true');
+  });
+  adminHideBtn.addEventListener('click', function(){ adminPanel.style.display = 'none'; });
+
+  // Toggle maintenance mode: flip the persistent flag
+  toggleMaintBtn.addEventListener('click', function(){
+    const current = isLocked();
+    localStorage.setItem(KEY_LOCKED, (!current).toString());
+    alert('Maintenance state changed. Now locked = ' + (!current));
+    // apply immediately
+    if(!isLocked()){
+      hideOverlay();
+    } else {
+      showOverlay();
+    }
+  });
+
+  // Force open site now (remove lock for everyone) - persistent
+  forceOpenBtn.addEventListener('click', function(){
+    localStorage.setItem(KEY_LOCKED, 'false');
+    localStorage.removeItem(KEY_HASH); // optional: remove stored hash if admin chooses
+    alert('Site opened for all visitors (maintenance disabled).');
+    hideOverlay();
+  });
+
+  // Set new password (stored hashed)
+  setPassBtn.addEventListener('click', async function(){
+    const p = newPassInput.value || '';
+    if(!p){
+      alert('Enter a new password in the field first.');
+      return;
+    }
+    const h = await sha256Hex(p);
+    localStorage.setItem(KEY_HASH, h);
+    newPassInput.value = '';
+    alert('Password set. Use it to unlock the site.');
+  });
+
+  // Clear password (admin may want to clear)
+  clearPassBtn.addEventListener('click', function(){
+    if(confirm('Clear stored password? This means no one can unlock until a new password is set. Proceed?')){
+      localStorage.removeItem(KEY_HASH);
+      alert('Password cleared. Set a new one.');
+    }
+  });
+
+  // Admin logout: clear session unlock for this tab
+  adminLogoutBtn.addEventListener('click', function(){
+    sessionStorage.removeItem(SESSION_UNLOCK);
+    alert('Admin session ended for this tab.');
+    // re-show overlay if site is locked
+    if(isLocked()) showOverlay();
+  });
+
+  // If admin is present but there is no password, show hint
+  if(amAdmin && !hasPassword()){
+    // small delay so the UI loads
+    setTimeout(()=> alert('Admin: No password set yet. Use the admin panel to set one.'), 300);
+  }
+
+  // Accessibility: focus password input when overlay shows
+  if(overlay.style.display !== 'none'){
+    setTimeout(()=> passInput.focus(), 200);
+  }
+
+  // For safety: if ip fetch failed, admin features remain hidden; still allow overlay to operate using local password if set.
+  if(!visitorIP){
+    console.info('Visitor IP could not be determined — admin panel is hidden. Password unlock still works if set.');
+  }
+
+  // Optional: automatically hide overlay if localStorage lock changed in another tab
+  window.addEventListener('storage', function(e){
+    if(e.key === KEY_LOCKED){
+      if(!isLocked()){
+        hideOverlay();
+      } else {
+        showOverlay();
+      }
+    }
+    if(e.key === KEY_HASH){
+      // password changed in another tab - no direct action needed
+      console.info('Password changed in another tab.');
+    }
+  });
+
+})();
+</script>
 </body>
 </html>
