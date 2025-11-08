@@ -367,5 +367,189 @@
   // Auto-update footer year
   document.getElementById("year").textContent = new Date().getFullYear();
 </script>
+  <!-- ===== MM INDUSTRY WELCOME POPUP ===== -->
+<div id="welcomePopup" class="popup-overlay">
+  <div class="popup-box">
+   
+
+    <!-- Welcome Message -->
+    <h2>👋 WELCOME TO MM INDUSTRY'S </h2>
+    <p>
+      We’re excited to have you here! Explore the latest innovations, services, and updates shaping the future of internet.
+    </p>
+
+    <!-- Latest Updates -->
+    <div class="updates-box">
+      <h3>🔔 Latest Updates</h3>
+      <ul>
+        <li>🚀 NEW boosting coming soon</li>
+        <li>🌱 Upgraded servers 99% </li>
+        <li>🤝 Partnership Opportunities Open — Join Us</li>
+      </ul>
+    </div>
+
+    <!-- Security reCAPTCHA -->
+    <div class="captcha-section">
+      <p>Please verify you’re not a robot:</p>
+      <div class="g-recaptcha" data-sitekey="6LeuXwYsAAAAAIUGwjovIVgxFpWTVdR6KxI_1Zoh" data-callback="enableContinue"></div>
+    </div>
+
+    <!-- Buttons -->
+    <div class="popup-buttons">
+      <button id="closePopupBtn" disabled>Continue to Site</button>
+     
+    </div>
+  </div>
+</div>
+
+<!-- ===== Google reCAPTCHA Script ===== -->
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+<!-- ===== Popup Script ===== -->
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const popup = document.getElementById("welcomePopup");
+    const closeBtn = document.getElementById("closePopupBtn");
+
+    // Show popup after short delay
+    setTimeout(() => {
+      popup.style.display = "flex";
+    }, 1000);
+
+    // Enable Continue button after reCAPTCHA verification
+    window.enableContinue = function() {
+      closeBtn.disabled = false;
+      closeBtn.style.background = "#004aad";
+      closeBtn.style.cursor = "pointer";
+    };
+
+    // Close popup
+    closeBtn.addEventListener("click", () => {
+      popup.style.opacity = "0";
+      setTimeout(() => (popup.style.display = "none"), 500);
+    });
+  });
+</script>
+
+<!-- ===== Popup Styles ===== -->
+<style>
+  .popup-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.65);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    backdrop-filter: blur(4px);
+    transition: opacity 0.5s ease;
+  }
+
+  .popup-box {
+    background: #fff;
+    padding: 30px 35px;
+    border-radius: 12px;
+    max-width: 420px;
+    text-align: center;
+    box-shadow: 0 0 25px rgba(0,0,0,0.25);
+    border-top: 4px solid #004aad;
+    font-family: "Segoe UI", Arial, sans-serif;
+    animation: slideDown 0.6s ease;
+  }
+
+  @keyframes slideDown {
+    0% { transform: translateY(-40px); opacity: 0; }
+    100% { transform: translateY(0); opacity: 1; }
+  }
+
+  .popup-logo img {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 74, 173, 0.4);
+  }
+
+  .popup-box h2 {
+    margin-top: 0;
+    color: #004aad;
+    font-size: 20px;
+  }
+
+  .popup-box p {
+    color: #333;
+    font-size: 14px;
+    margin: 10px 0 20px;
+    line-height: 1.6;
+  }
+
+  .updates-box {
+    text-align: left;
+    background: #f5f7fb;
+    border-radius: 8px;
+    padding: 12px 15px;
+    margin-bottom: 15px;
+  }
+
+  .updates-box h3 {
+    font-size: 15px;
+    margin-bottom: 8px;
+    color: #004aad;
+  }
+
+  .updates-box ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-size: 13.5px;
+    color: #333;
+  }
+
+  .updates-box ul li {
+    margin-bottom: 6px;
+  }
+
+  .captcha-section {
+    margin: 10px 0 15px;
+  }
+
+  .popup-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  #closePopupBtn {
+    background: #ccc;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 20px;
+    font-size: 14px;
+    cursor: not-allowed;
+    transition: all 0.3s ease;
+  }
+
+  #closePopupBtn:hover:enabled {
+    background: #0066ff;
+  }
+
+  .view-updates-btn {
+    display: inline-block;
+    background: #004aad;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 6px;
+    padding: 10px 18px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+  }
+
+  .view-updates-btn:hover {
+    background: #ff6a00;
+  }
+</style>
 </body>
 </html>
